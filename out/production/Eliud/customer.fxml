@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.drinkssystem.customercontroller">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="drinkssystem.customercontroller">
     <children>
         <Label layoutX="121.0" layoutY="30.0" prefHeight="33.0" prefWidth="435.0" text="WELCOME TO DUKA MOJA ENTERPRICE LTD" textAlignment="CENTER">
             <font><Font name="Century" size="18.0" /></font>
@@ -27,7 +27,7 @@
         <Label layoutX="123.0" layoutY="254.0" prefWidth="71.0" text="Total Price" />
         <TextField fx:id="totalPriceField" layoutX="194.0" layoutY="250.0" prefWidth="132.0" />
 
-        <Button fx:id="submit" layoutX="310.0" layoutY="302.0" onAction="#handlesubmit" prefWidth="65.0" style="-fx-background-color: #5064c3; -fx-border-color: black;" text="SUBMIT" />
+        <Button fx:id="submit" layoutX="310.0" layoutY="302.0" onAction="#handlesubmit" prefWidth="65.0" style="-fx-background-color: #5064c3;" text="SUBMIT" />
 
         <VBox layoutX="1.0" layoutY="-1.0" prefHeight="400.0" prefWidth="113.0" style="-fx-background-color: #5064c3;">
             <children>
@@ -37,6 +37,5 @@
                </font></Label>
             </children>
         </VBox>
-      <Button fx:id="back" layoutX="499.0" layoutY="346.0" mnemonicParsing="false" onAction="#handleback" style="-fx-border-color: #5064c3;" text="Back" textFill="#5064c3" />
     </children>
 </AnchorPane>

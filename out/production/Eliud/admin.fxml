@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400" prefWidth="600" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.drinkssystem.admincontroller">
+<AnchorPane prefHeight="400" prefWidth="600" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="drinkssystem.admincontroller">
     <children>
         <!-- Sidebar -->
         <VBox prefHeight="400" prefWidth="120" style="-fx-background-color: #5064c3;">

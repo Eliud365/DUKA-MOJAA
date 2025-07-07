@@ -5,7 +5,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-border-color: #5064c3; -fx-background-color: #5064c3;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.drinkssystem.logincontroller">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-border-color: #5064c3; -fx-background-color: #5064c3;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="drinkssystem.logincontroller">
     <children>
         <Label fx:id="title" layoutX="147.0" layoutY="82.0" prefHeight="23.0" prefWidth="305.0" text="DUKA MOJA ENTERPRICE LTD" underline="true">
             <font>
