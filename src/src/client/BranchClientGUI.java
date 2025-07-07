@@ -1,8 +1,7 @@
 // File: BranchClientGUI.java
 package client;
 
-import client.model.Order;
-
+import common.Order;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,7 +16,7 @@ public class BranchClientGUI extends JFrame {
     private JComboBox<String> branchBox;
     private JLabel totalLabel;
     private static final String SERVER_IP = "127.0.0.1";
-    private static final int SERVER_PORT = 9090;
+    private static final int SERVER_PORT = 5000;
 
     private final Map<String, Double> drinkPrices = new HashMap<>() {{
         put("Coke", 50.0);
