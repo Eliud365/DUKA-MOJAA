@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-border-color: #5064c3; -fx-background-color: #5064c3;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="drinkssystem.logincontroller">
+    <children>
+        <Label fx:id="title" layoutX="147.0" layoutY="82.0" prefHeight="23.0" prefWidth="305.0" text="DUKA MOJA ENTERPRICE LTD" underline="true">
+            <font>
+                <Font name="Century" size="18.0" />
+            </font>
+        </Label>
+        <Label fx:id="title2" layoutX="267.0" layoutY="119.0" prefHeight="15.0" prefWidth="41.0" text="Log In" textFill="WHITE">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font></Label>
+        <Button fx:id="customerButton" layoutX="249.0" layoutY="181.0" mnemonicParsing="false" onAction="#handleCustomerLogin" text="CUSTOMER">
+         <textFill>
+            <RadialGradient centerX="0.5" centerY="0.46845427070882417" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.06673886626958847" green="0.06649339199066162" blue="0.07017543911933899" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.22807016968727112" green="0.9122806787490845" blue="0.4903508722782135" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill></Button>
+        <Button fx:id="adminButton" layoutX="234.0" layoutY="246.0" mnemonicParsing="false" onAction="#handleAdminLogin" text="ADMINISTRATOR">
+         <textFill>
+            <RadialGradient centerX="0.5" centerY="0.46845427070882417" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.06673886626958847" green="0.06649339199066162" blue="0.07017543911933899" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.22807016968727112" green="0.9122806787490845" blue="0.4903508722782135" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill></Button>
+    </children>
+</AnchorPane>
