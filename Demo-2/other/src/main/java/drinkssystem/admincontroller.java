@@ -22,7 +22,7 @@ public class admincontroller {
 
     @FXML
     private void handleSalesReports(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("salesreport.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/salesreport.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
@@ -37,7 +37,7 @@ public class admincontroller {
     @FXML
     private void handleStockAlerts(ActionEvent event) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getResource("stockalert.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/stockalert.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
@@ -51,7 +51,7 @@ public class admincontroller {
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/login.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();

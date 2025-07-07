@@ -22,7 +22,7 @@ public class logincontroller {
         @FXML
         private void handleCustomerLogin(ActionEvent event) {
             try {
-                Parent customerRoot = FXMLLoader.load(getClass().getResource("/drinkssystem/customer.fxml"));
+                Parent customerRoot = FXMLLoader.load(getClass().getResource("/customer.fxml"));
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(new Scene(customerRoot));
                 stage.setTitle("Customer Portal");
@@ -35,7 +35,7 @@ public class logincontroller {
         @FXML
         private void handleAdminLogin(ActionEvent event) {
             try {
-                Parent adminRoot = FXMLLoader.load(getClass().getResource("/drinkssystem/admin.fxml"));
+                Parent adminRoot = FXMLLoader.load(getClass().getResource("/admin.fxml"));
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(new Scene(adminRoot));
                 stage.setTitle("Admin Portal");
@@ -43,7 +43,6 @@ public class logincontroller {
             } catch (IOException e) {
                 e.printStackTrace();
         }
-
         }
     }
 

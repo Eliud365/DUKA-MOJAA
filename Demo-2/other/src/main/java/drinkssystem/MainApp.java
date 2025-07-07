@@ -12,7 +12,7 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         try {
             // Load the login.fxml file
-            Parent root = FXMLLoader.load(getClass().getResource("/drinkssystem/login.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/login.fxml"));
 
             // Set up the scene
             Scene scene = new Scene(root);
