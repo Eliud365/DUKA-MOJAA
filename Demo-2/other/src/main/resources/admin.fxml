@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400" prefWidth="600" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="drinkssystem.admincontroller">
+    <children>
+        <!-- Sidebar -->
+        <VBox prefHeight="400" prefWidth="120" style="-fx-background-color: #5064c3;">
+            <children>
+                <Label alignment="CENTER" prefHeight="60" prefWidth="120" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="ADMIN" textFill="WHITE">
+               <font>
+                  <Font name="Century" size="14.0" />
+               </font></Label>
+            </children>
+        </VBox>
+
+        <!-- Title -->
+        <Label layoutX="200.0" layoutY="56.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Admin Dashboard" />
+
+        <!-- Sales Reports Button -->
+        <Button fx:id="salesReportBtn" layoutX="200" layoutY="120" onAction="#handleSalesReports" prefWidth="200" style="-fx-background-color: #5064c3; -fx-text-fill: white;" text="Sales Reports" />
+
+        <!-- Stock Alerts Button -->
+        <Button fx:id="stockAlertBtn" layoutX="200" layoutY="180" onAction="#handleStockAlerts" prefWidth="200" style="-fx-background-color: #5064c3; -fx-text-fill: white;" text="Stock Alerts" />
+      <Button fx:id="logoutButton" layoutX="473.0" layoutY="332.0" mnemonicParsing="false" onAction="#handleLogout" style="-fx-region-border: #5064c3;" text="Log Out" textFill="#5064c3" />
+
+    </children>
+</AnchorPane>
