@@ -1,0 +1,238 @@
+// API endpoints
+const drinksEndpoint = "http://localhost:5000/drinks";
+const ordersEndpoint = "http://localhost:5000/orders";
+
+// DOM elements
+const drinkSelect = document.getElementById("drinkSelect");
+const quantityInput = document.getElementById("quantity");
+const totalDiv = document.getElementById("totalAmount");
+const confirmationDiv = document.getElementById("confirmation");
+const submitBtn = document.getElementById("submitBtn");
+const orderForm = document.getElementById("orderForm");
+
+// Application state
+let drinksData = [];
+let isLoading = false;
+
+// Utility functions
+function showLoading(element, originalText) {
+element.classList.add('loading');
+element.textContent = '';
+element.disabled = true;
+}
+
+function hideLoading(element, originalText) {
+element.classList.remove('loading');
+element.textContent = originalText;
+element.disabled = false;
+}
+
+function showConfirmation(message, type = 'success') {
+confirmationDiv.textContent = message;
+confirmationDiv.className = `confirmation ${type}`;
+confirmationDiv.style.opacity = '0';
+confirmationDiv.style.transform = 'translateY(20px)';
+
+// Animate in
+setTimeout(() => {
+confirmationDiv.style.transition = 'all 0.3s ease';
+confirmationDiv.style.opacity = '1';
+confirmationDiv.style.transform = 'translateY(0)';
+}, 10);
+}
+
+function hideConfirmation() {
+confirmationDiv.style.opacity = '0';
+confirmationDiv.style.transform = 'translateY(-20px)';
+setTimeout(() => {
+confirmationDiv.textContent = '';
+confirmationDiv.className = 'confirmation';
+}, 300);
+}
+
+function formatCurrency(amount) {
+return new Intl.NumberFormat('en-KE', {
+style: 'currency',
+currency: 'KES',
+minimumFractionDigits: 0
+}).format(amount);
+}
+
+// Load available drinks with error handling
+async function loadDrinks() {
+try {
+showLoading(drinkSelect, '');
+
+const response = await fetch(drinksEndpoint);
+if (!response.ok) {
+throw new Error(`HTTP error! status: ${response.status}`);
+}
+
+const text = await response.text();
+
+// Parse the response (assuming it's a JavaScript array string)
+let drinks;
+try {
+drinks = eval(text); // Note: In production, use proper JSON parsing
+} catch (parseError) {
+throw new Error('Invalid response format from server');
+}
+
+drinksData = drinks;
+
+// Clear existing options
+drinkSelect.innerHTML = '<option value="">-- Choose a drink --</option>';
+
+// Populate dropdown
+drinks.forEach(drink => {
+const option = document.createElement("option");
+option.value = drink.name;
+option.textContent = `${drink.name} (${drink.quantity} available)`;
+option.dataset.price = drink.price || 100; // Default price if not provided
+drinkSelect.appendChild(option);
+});
+
+hideLoading(drinkSelect, '');
+updateTotal();
+
+} catch (error) {
+console.error('Error loading drinks:', error);
+hideLoading(drinkSelect, '');
+
+// Show error option
+drinkSelect.innerHTML = '<option value="">❌ Error loading drinks</option>';
+showConfirmation('Failed to load drinks. Please refresh the page.', 'error');
+}
+}
+
+// Update total amount
+function updateTotal() {
+const quantity = parseInt(quantityInput.value) || 0;
+const selectedOption = drinkSelect.options[drinkSelect.selectedIndex];
+
+if (selectedOption && selectedOption.value) {
+const pricePerUnit = parseInt(selectedOption.dataset.price) || 100;
+const total = quantity * pricePerUnit;
+totalDiv.textContent = `💰 Total: ${formatCurrency(total)}`;
+} else {
+totalDiv.textContent = `💰 Total: ${formatCurrency(0)}`;
+}
+}
+
+// Validate form inputs
+function validateForm() {
+const customer = document.getElementById("customerName").value.trim();
+const branch = document.getElementById("branchName").value.trim();
+const drink = drinkSelect.value;
+const quantity = parseInt(quantityInput.value);
+
+const errors = [];
+
+if (!customer) errors.push("Customer name is required");
+if (!branch) errors.push("Branch location is required");
+if (!drink) errors.push("Please select a drink");
+if (!quantity || quantity < 1) errors.push("Quantity must be at least 1");
+if (quantity > 50) errors.push("Maximum quantity is 50");
+
+return errors;
+}
+
+// Handle form submission
+async function handleSubmit(e) {
+e.preventDefault();
+
+if (isLoading) return;
+
+const errors = validateForm();
+if (errors.length > 0) {
+showConfirmation(`❌ ${errors.join(', ')}`, 'error');
+return;
+}
+
+isLoading = true;
+showLoading(submitBtn, '✅ Place Order');
+
+try {
+const customer = document.getElementById("customerName").value.trim();
+const branch = document.getElementById("branchName").value.trim();
+const drink = drinkSelect.value;
+const quantity = parseInt(quantityInput.value);
+const selectedOption = drinkSelect.options[drinkSelect.selectedIndex];
+const pricePerUnit = parseInt(selectedOption.dataset.price) || 100;
+const total = quantity * pricePerUnit;
+
+const formData = new URLSearchParams();
+formData.append("customer", customer);
+formData.append("branch", branch);
+formData.append("drink", drink);
+formData.append("quantity", quantity);
+formData.append("total", total);
+formData.append("timestamp", new Date().toISOString());
+
+const response = await fetch(ordersEndpoint, {
+method: "POST",
+headers: {
+"Content-Type": "application/x-www-form-urlencoded",
+"Accept": "application/json, text/plain, */*"
+},
+body: formData.toString()
+});
+
+if (!response.ok) {
+throw new Error(`Order failed: ${response.status}`);
+}
+
+await response.text();
+
+// Success
+showConfirmation("✅ Order placed successfully! We'll prepare your drink right away.", 'success');
+
+// Reset form after delay
+setTimeout(() => {
+orderForm.reset();
+updateTotal();
+hideConfirmation();
+}, 3000);
+
+} catch (error) {
+console.error('Order error:', error);
+showConfirmation(`❌ Failed to place order: ${error.message}`, 'error');
+} finally {
+isLoading = false;
+hideLoading(submitBtn, '✅ Place Order');
+}
+}
+
+// Event listeners
+quantityInput.addEventListener("input", updateTotal);
+drinkSelect.addEventListener("change", updateTotal);
+orderForm.addEventListener("submit", handleSubmit);
+
+// Input validation and formatting
+quantityInput.addEventListener("input", function() {
+let value = parseInt(this.value);
+if (value < 1) this.value = 1;
+if (value > 50) this.value = 50;
+});
+
+// Auto-format customer name
+document.getElementById("customerName").addEventListener("input", function() {
+this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+});
+
+// Initialize app
+document.addEventListener('DOMContentLoaded', function() {
+loadDrinks();
+updateTotal();
+});
+
+// Handle network errors gracefully
+window.addEventListener('online', function() {
+if (drinksData.length === 0) {
+loadDrinks();
+}
+});
+
+window.addEventListener('offline', function() {
+showConfirmation('⚠️ You are offline. Orders may not be processed.', 'error');
+});

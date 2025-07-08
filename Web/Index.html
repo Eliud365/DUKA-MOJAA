@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DUKA-MOJA | Buyer Portal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f9f5f0;
+            color: #4b2e2e;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 3rem auto;
+            background: #fff8f0;
+            border: 2px solid #c7b198;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #5a3d2b;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 1rem;
+            display: block;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 0.6rem;
+            margin-top: 0.3rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            border: 1px solid #c7b198;
+            background-color: #fdf6ef;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.7rem;
+            background-color: #8b5e3c;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #a17248;
+        }
+
+        .success {
+            text-align: center;
+            color: green;
+            margin-top: 1rem;
+        }
+
+        .error {
+            text-align: center;
+            color: red;
+            margin-top: 1rem;
+        }
+
+        #totalDisplay {
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-align: right;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>🍹 Place Your Drink Order</h2>
+
+    <label for="customer">Your Name</label>
+    <input type="text" id="customer" placeholder="Enter your name">
+
+    <label for="drink">Choose a Drink</label>
+    <select id="drink">
+        <option value="">Loading drinks...</option>
+    </select>
+
+    <label for="quantity">Quantity</label>
+    <input type="number" id="quantity" min="1" value="1">
+
+    <label for="branch">Branch Name</label>
+    <input type="text" id="branch" placeholder="e.g. Westlands, CBD">
+
+    <div id="totalDisplay">Total: KES 0</div>
+
+    <button onclick="submitOrder()">Place Order</button>
+
+    <div id="status"></div>
+</div>
+
+<script>
+    let drinks = {};
+    const pricePerDrink = 50; // Flat price per drink
+
+    async function fetchDrinks() {
+        try {
+            const res = await fetch("http://10.31.137.164:5000/drinks");
+            const data = await res.json();
+            drinks = data;
+
+            const drinkSelect = document.getElementById("drink");
+            drinkSelect.innerHTML = '<option value="">-- Select a drink --</option>';
+            data.forEach(drink => {
+                const option = document.createElement("option");
+                option.value = drink.name;
+                option.textContent = `${drink.name} (Available: ${drink.quantity})`;
+                drinkSelect.appendChild(option);
+            });
+        } catch (err) {
+            console.error("Error fetching drinks:", err);
+            document.getElementById("drink").innerHTML = "<option>Error loading drinks</option>";
+        }
+    }
+
+    function updateTotal() {
+        const qty = parseInt(document.getElementById("quantity").value) || 0;
+        document.getElementById("totalDisplay").innerText = `Total: KES ${qty * pricePerDrink}`;
+    }
+
+    async function submitOrder() {
+        const customer = document.getElementById("customer").value;
+        const drink = document.getElementById("drink").value;
+        const quantity = document.getElementById("quantity").value;
+        const branch = document.getElementById("branch").value;
+        const total = quantity * pricePerDrink;
+
+        if (!customer || !drink || !quantity || !branch) {
+            document.getElementById("status").innerHTML = "<div class='error'>🚫 Please fill all fields.</div>";
+            return;
+        }
+
+        const body = `customer=${encodeURIComponent(customer)}&drink=${encodeURIComponent(drink)}&quantity=${quantity}&branch=${encodeURIComponent(branch)}&total=${total}`;
+
+        try {
+            const res = await fetch("http://10.31.137.164:5000/orders", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: body
+            });
+
+            const result = await res.text();
+            document.getElementById("status").innerHTML = "<div class='success'>✅ Order placed successfully!</div>";
+
+            // Refresh drinks
+            fetchDrinks();
+        } catch (err) {
+            console.error("Order failed:", err);
+            document.getElementById("status").innerHTML = "<div class='error'>❌ Failed to place order.</div>";
+        }
+    }
+
+    // Attach event listener for real-time total
+    document.getElementById("quantity").addEventListener("input", updateTotal);
+
+    // Initial load
+    fetchDrinks();
+    updateTotal();
+</script>
+</body>
+</html>
